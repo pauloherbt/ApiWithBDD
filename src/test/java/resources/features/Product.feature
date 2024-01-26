@@ -4,12 +4,22 @@ Feature: Products Store
     And one of these products is a "Notebook"
     Then All products should be returned
 
-  Scenario: Get one product in store
+  Scenario Outline: Get one product in store
     Given have more than 0 products in store
-    And one of these products is a "CellPhone"
+    And one of these products is a "<existingProduct>"
+    When trying to get product with name "<existingProduct>"
     Then one product should be returned
+    Examples:
+      | existingProduct |
+      | CellPhone       |
 
-  Scenario: Get one product in store when product doesn't exist
+  Scenario Outline: Get one product in store when product doesn't exist
     Given have more than 0 products in store
-    And none of these products is a "NonExistentProduct"
-    Then should be throw an error
+    And the product with name "<nonExistingProduct>" doesnt exist
+    When trying to get product with name "<nonExistingProduct>"
+    Then should be thrown an exception
+    Examples:
+      | nonExistingProduct |
+      | Balao              |
+
+
